@@ -1103,9 +1103,13 @@ Thank you!\n";
 			return 0;
 		}
 
-#ifdef SMINA_GPU
-		initializeCUDA(device);
+#if (OB_VERSION > OB_VERSION_CHECK(2, 3, 2))
+		OpenBabel::OBPlugin::LoadAllPlugins(); // for some reason loading on demand can be slow
 #endif
+
+		OpenBabel::vector3 dummy; // openbabel uses system rand initialized with time seed
+		dummy.randomUnitVector(); // this setups up the obrandom object with time
+		srand(settings.seed);     // so now it is safe(?) to set the system seed
 
 		set_fixed_rotable_hydrogens(!flex_hydrogens);
 
