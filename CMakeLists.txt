@@ -20,7 +20,11 @@ file(GLOB sminaserver
 )
 
 set (CMAKE_CXX_STANDARD 11)
-set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+
+if(APPLE)
+ set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+ set(Boost_USE_STATIC_LIBS   ON)
+endif()
 
 message(${CMAKE_CURRENT_BINARY_DIR})
 # Add a custom command that produces version.cpp, plus
