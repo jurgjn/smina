@@ -1,0 +1,23 @@
+name: Sync from SourceForge
+on:
+  schedule:
+    - cron: '0 6 * * *'   # daily at 06:00 UTC
+  workflow_dispatch:       # adds a manual "Run workflow" button
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mirror upstream master
+        run: |
+          git remote add upstream https://git.code.sf.net/p/smina/code
+          git fetch upstream --tags
+          git push origin refs/remotes/upstream/master:refs/heads/upstream-master
+          git push origin --tags
+
